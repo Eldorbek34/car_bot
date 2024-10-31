@@ -7,6 +7,11 @@ from apps.notification.models import UserFCMToken, NotificationUser
 from apps.notification.serializers import FCMTokenSerializer, NotificationUserSerializer
 from apps.notification.permissions import IsOwner
 
+from django.views import View
+from django.conf import settings
+from django.http import JsonResponse
+
+
 
 class RegisterFcmToken(CreateAPIView):
     serializer_class = FCMTokenSerializer
@@ -62,3 +67,21 @@ class UserNotificationExist(APIView):
         return Response(
             {'notification_exist': notification_count != 0,
              'notification_count': notification_count})
+
+
+
+# view
+
+class FirebaseConfigView(View):
+    def get(self, request, *args, **kwargs):
+        firebase_config = {
+            "apiKey": settings.API_KEY,
+            "authDomain": settings.AUTH_DOMAIN,
+            "projectId": settings.PROJECT_ID,
+            "storageBucket": settings.STORAGE_BUCKET,
+            "messagingSenderId": settings.MESSAGING_SENDER_ID,
+            "appId": settings.APP_ID,
+            "measurementId": settings.MEASUREMENT_ID
+        }
+
+        return JsonResponse(firebase_config)

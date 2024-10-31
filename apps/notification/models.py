@@ -37,7 +37,7 @@ class NotificationUser(BaseModel):
 
 
 class UserFCMToken(BaseModel):
-    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE, related_name='fcm_token')
     token = models.CharField(max_length=255, verbose_name=_("Token"), unique=True)
 
     class Meta:

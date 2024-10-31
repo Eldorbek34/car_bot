@@ -45,7 +45,8 @@ DJANGO_APPS = [
 
 CUSTOM_APPS = [
     "apps.common",
-    "apps.notification"
+    "apps.notification",
+    "apps.user",
 ]
 
 THIRD_PARTY_APPS = [
@@ -132,6 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+AUTH_USER_MODEL='user.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -192,3 +194,4 @@ firebase_admin.initialize_app(cred)
 
 # cors headers settings
 CORS_ALLOW_ALL_ORIGINS = True
+
