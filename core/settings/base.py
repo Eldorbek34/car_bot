@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-import firebase_admin
-from firebase_admin import credentials
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,8 +43,8 @@ DJANGO_APPS = [
 
 CUSTOM_APPS = [
     "apps.common",
-    "apps.notification",
     "apps.user",
+    "apps.bot",
 ]
 
 THIRD_PARTY_APPS = [
@@ -104,15 +102,22 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": env.str("DB_ENGINE"),
+#         "NAME": env.str("DB_NAME"),
+#         "USER": env.str("DB_USER"),
+#         "PASSWORD": env.get_value("DB_PASSWORD"),
+#         "HOST": env.str("DB_HOST"),
+#         "PORT": env.str("DB_PORT"),
+#         "ATOMIC_REQUESTS": True,
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": env.str("DB_ENGINE"),
-        "NAME": env.str("DB_NAME"),
-        "USER": env.str("DB_USER"),
-        "PASSWORD": env.get_value("DB_PASSWORD"),
-        "HOST": env.str("DB_HOST"),
-        "PORT": env.str("DB_PORT"),
-        "ATOMIC_REQUESTS": True,
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -173,6 +178,7 @@ CACHES = {
 REDIS_HOST = env.str("REDIS_HOST", "localhost")
 REDIS_PORT = env.int("REDIS_PORT", 6379)
 REDIS_DB = env.int("REDIS_DB", 0)
+REDIS_URL = env.str("REDIS_URL", "redis://localhost:6379/0")
 
 # CELERY CONFIGURATION
 CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "redis://localhost:6379")
@@ -188,9 +194,6 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 AES_KEY = env.str("AES_KEY", "")
 
 
-# firebase settings
-cred = credentials.Certificate(BASE_DIR / "serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
 
 # cors headers settings
 CORS_ALLOW_ALL_ORIGINS = True
